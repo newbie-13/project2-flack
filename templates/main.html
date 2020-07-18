@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Main</title>
+  </head>
+  <body>
+    <h3>Create Channel</h3>
+    <form action="{{ url_for('create') }}" method="post">
+      <input type="text" name="channel" placeholder="Channel Name">
+      <button type="submit" name="button">create</button>
+    </form>
+    <hr>
+    <h3>Channel List</h3>
+    <ul>
+      {% for channel in channels %}
+        <li>
+          <a href=" {{ url_for('channel', channel = channel) }} ">{{ channel }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

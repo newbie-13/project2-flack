@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ channel }}</title>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function(){
+        document.querySelector('.send').disabled = true;
+        document.addEventListener('keyup', function() {
+          if (document.querySelector('input').value.length != 0){
+            document.querySelector('.send').disabled = false;
+          }
+          else {
+            document.querySelector('.send').disabled = true;
+          }
+        });
+
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+        socket.on('connect', function() {
+          document.querySelector('button').onclick = function() {
+            const message = document.querySelector('input').value;
+            const name = localStorage.getItem('displayname');
+            const channel = document.querySelector('h1').innerHTML;
+            socket.emit('send message', {'name': name, 'message': message, 'channel': channel});
+            document.querySelector('input').value = "";
+          };
+        });
+
+        socket.on('receive message', data => {
+          document.querySelector('div').innerHTML += data["name"] + ": " + data["message"] + " " + "(" + data["time"] + ")";
+          const br = document.createElement('br');
+          document.querySelector('div').append(br);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>{{ channel }}</h1>
+    <hr>
+    <h3>Message:</h3>
+    {% for message in messages %}
+      {{message[0]}}: {{message[1]}} ({{message[2]}})
+      <br>
+    {% endfor %}
+    <div class="">
+
+    </div>
+    <br>
+    <input type="text" name="message">
+    <button type="button" name="button" class="send">send</button>
+    <hr>
+    <a href="{{ url_for('main') }}">
+      <button type="button" name="button">Back</button>
+    </a>
+  </body>
+</html>

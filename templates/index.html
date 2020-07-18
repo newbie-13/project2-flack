@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Index</title>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+        if (!localStorage.getItem('displayname')) {
+          const input = document.createElement('input');
+          input.type = "text";
+          input.name = "name";
+          input.placeholder = "Display Name";
+          document.querySelector('div').append(input);
+
+          const button = document.createElement('button');
+          button.type = "button";
+          button.innerHTML = "comfirm";
+          document.querySelector('div').append(button);
+
+          document.querySelector('button').onclick = function(){
+            const name = document.querySelector('input').value;
+            localStorage.setItem('displayname', name);
+            location.reload();
+          };
+        }
+
+        else {
+          const name = localStorage.getItem('displayname');
+
+          const h1 = document.createElement('h1');
+          h1.innerHTML = "Welcome, " + name + "!";
+          document.querySelector('div').append(h1);
+
+          const button = document.createElement('button');
+          button.type = "button";
+          button.innerHTML = "Enter";
+          document.querySelector('a').append(button);
+        }
+      });
+
+    </script>
+  </head>
+  <body>
+    <div class="">
+
+    </div>
+    <a href="{{ url_for('main') }}"></a>
+  </body>
+</html>
